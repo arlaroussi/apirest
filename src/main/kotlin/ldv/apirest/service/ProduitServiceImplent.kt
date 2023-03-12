@@ -12,7 +12,7 @@ class BoxServiceImplent(private val boxRepository: BoxRepository) : BoxService {
     }
 
     override fun creerBox(id: Long, box: Box) {
-        TODO("Not yet implemented")
+
     }
 
 }

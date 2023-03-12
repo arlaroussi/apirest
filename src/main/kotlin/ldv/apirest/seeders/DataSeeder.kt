@@ -38,7 +38,6 @@ class DataSeeder(
                 elem.get("prix").asDouble(),
                 elem.get("image").toString()
             )
-            //Ajout d'une Box
 
             //Ajout des saveurs
             for (j: Int in 0 until elem.get("saveurs").size()) {
@@ -52,27 +51,30 @@ class DataSeeder(
                 saveurRepository.save(saveur)
                 aBox1.saveurs.add(saveur)
             }
-            boxRepository.save(aBox1)
 
             //Ajout des aliments
             for (i: Int in 0 until elem.get("aliments").size()) {
+
                 aliment = Aliment(elem.get("aliments")[i].get("nom").toString())
-                if (alimentRepository.findAlimentByName(aliment.nom) == 0)
-                    alimentRepository.save(aliment)
-                else {
+
+                if (alimentRepository.findAlimentByName(aliment.nom) != 0) {
                     var id: Long
                     id = alimentRepository.finAlimentIdByName(elem.get("aliments")[i].get("nom").toString())
                     aliment = alimentRepository.findByIdOrNull(id)!!
-                    alimentRepository.save(aliment)
                 }
+                //Ajout d'un aliment
+                alimentRepository.save(aliment)
+                boxRepository.save(aBox1)
+                //Ajout d'un AlimentBox
                 alimentBox = AlimentBox(
                     elem.get("aliments")[i].get("quantite").asInt(),
                     aBox1,
                     aliment
                 )
                 alimentBoxRepository.save(alimentBox)
-            }
+                aBox1.alimentBoxes.add(alimentBox)
 
+            }
         }
     }
 }
