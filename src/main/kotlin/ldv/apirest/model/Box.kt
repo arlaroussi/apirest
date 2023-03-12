@@ -24,9 +24,9 @@ class Box(
 )
 
 {
-    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "box")
+    @OneToMany(cascade = [CascadeType.MERGE], mappedBy = "box")
     var alimentBoxes = mutableListOf<AlimentBox>()
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     var saveurs = mutableListOf<Saveur>()
 }

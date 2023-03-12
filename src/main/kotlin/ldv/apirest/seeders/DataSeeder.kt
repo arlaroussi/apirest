@@ -17,21 +17,19 @@ class DataSeeder(
     private val boxRepository: BoxRepository,
     private val alimentRepository: AlimentRepository,
     private val saveurRepository: SaveurRepository,
-    private val alimentBoxRepository: AlimentBoxRepository,
-    private val boxSaveurRepository: BoxSaveurRepository
+    private val alimentBoxRepository: AlimentBoxRepository
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments) {
 
         val mapper = jacksonObjectMapper()
 
-        var sourceData: String = "G:/projets/spring/apirest/src/assets/boxes1.json"
+        var sourceData: String = "G:/projets/spring/apirest/src/main/kotlin/ldv/apirest/assets/boxes1.json"
         val result: JsonNode = mapper.readTree(InputStreamReader(FileInputStream(sourceData)))
         var aBox1: Box
         var aliment: Aliment
         var saveur: Saveur
         var alimentBox: AlimentBox
-        var boxSaveur: BoxSaveur
 
         for (elem in result) {
             aBox1 = Box(
@@ -41,25 +39,20 @@ class DataSeeder(
                 elem.get("image").toString()
             )
             //Ajout d'une Box
-            boxRepository.save(aBox1)
 
             //Ajout des saveurs
             for (j: Int in 0 until elem.get("saveurs").size()) {
-
                 if (saveurRepository.findSaveurByName(elem.get("saveurs")[j].toString()) == 0) {
                     saveur = Saveur(elem.get("saveurs")[j].toString())
-                    saveurRepository.save(saveur)
-                }
-               else {
+                } else {
                     var id: Long
-                        id = saveurRepository.findSaveurIdByName(elem.get("saveurs")[j].toString())
-                        saveur = saveurRepository.findByIdOrNull(id)!!
-                        saveurRepository.save(saveur)
-                    }
-                    boxSaveur = BoxSaveur(aBox1.id!!, saveur.id!!)
-                    boxSaveurRepository.save(boxSaveur)
+                    id = saveurRepository.findSaveurIdByName(elem.get("saveurs")[j].toString())
+                    saveur = saveurRepository.findByIdOrNull(id)!!
                 }
-
+                saveurRepository.save(saveur)
+                aBox1.saveurs.add(saveur)
+            }
+            boxRepository.save(aBox1)
 
             //Ajout des aliments
             for (i: Int in 0 until elem.get("aliments").size()) {
@@ -83,6 +76,7 @@ class DataSeeder(
         }
     }
 }
+
 
 
 
