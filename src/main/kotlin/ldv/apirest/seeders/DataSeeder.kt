@@ -24,7 +24,7 @@ class DataSeeder(
 
         val mapper = jacksonObjectMapper()
 
-        var sourceData: String = "G:/projets/spring/apirest/src/main/kotlin/ldv/apirest/assets/boxes1.json"
+        var sourceData: String = "G:/projets/spring/apirest/src/main/kotlin/ldv/apirest/assets/boxes.json"
         val result: JsonNode = mapper.readTree(InputStreamReader(FileInputStream(sourceData)))
         var aBox1: Box
         var aliment: Aliment
@@ -67,7 +67,7 @@ class DataSeeder(
                 boxRepository.save(aBox1)
                 //Ajout d'un AlimentBox
                 alimentBox = AlimentBox(
-                    elem.get("aliments")[i].get("quantite").asInt(),
+                    elem.get("aliments")[i].get("quantite").floatValue(),
                     aBox1,
                     aliment
                 )

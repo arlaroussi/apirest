@@ -9,7 +9,7 @@ import org.hibernate.query.results.Builders.fetch
 @Table(name="alimentbox")
 class AlimentBox(
     @Column(name = "quantite", nullable = false)
-    var quantite: Int,
+    var quantite: Float,
 
     @ManyToOne()
     val box: Box,

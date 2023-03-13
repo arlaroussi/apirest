@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException
 @Service
 class BoxService(val boxRepository: BoxRepository) {
 
-    fun getAll(): List<Box> = boxRepository.findAll()
+    fun getAll(): MutableList<Box> = boxRepository.findAll()
 
     fun getById(id: Long): Box = boxRepository.findByIdOrNull(id) ?:
     throw ResponseStatusException(HttpStatus.NOT_FOUND)
